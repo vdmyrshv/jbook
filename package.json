@@ -13,6 +13,7 @@
     "@types/react": "^17.0.21",
     "@types/react-dom": "^17.0.9",
     "axios": "^0.21.4",
+    "bulmaswatch": "^0.8.1",
     "esbuild-wasm": "0.8.27",
     "localforage": "^1.10.0",
     "monaco-editor": "0.21.3",
@@ -20,7 +21,6 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
-    "styled-components": "^5.3.1",
     "typescript": "^4.4.3",
     "web-vitals": "^1.1.2"
   },
