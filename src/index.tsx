@@ -5,6 +5,8 @@ import ReactDOM from "react-dom";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 
+import CodeEditor from "./components/CodeEditor";
+
 const App = () => {
   // remember with typescript you have to assign a ref type
   const serviceRef = useRef<any>();
@@ -12,7 +14,7 @@ const App = () => {
   const iframeRef = useRef<any>();
 
   const [input, setInput] = useState("");
-  const [code, setCode] = useState("");
+  // const [code, setCode] = useState("");
 
   const startService = async () => {
     serviceRef.current = await esbuild.startService({
@@ -39,6 +41,8 @@ const App = () => {
     // remember: this is a type guard
     if (!serviceRef.current) return;
 
+    iframeRef.current.srcdoc = html;
+
     try {
       // code for transform
       // const result = await serviceRef.current.transform(input, {
@@ -58,7 +62,10 @@ const App = () => {
       // setCode(result.outputFiles[0].text);
       // instead of updating state for the code string, a postMessage is sent to the iframe to communicate the code
       // instead of using source doc
-      iframeRef.current.contentWindow.postMessage(result.outputFiles[0].text, "*");
+      iframeRef.current.contentWindow.postMessage(
+        result.outputFiles[0].text,
+        "*"
+      );
     } catch (error) {
       alert(error);
     }
@@ -71,7 +78,13 @@ const App = () => {
       <div id="root"></div>
       <script>
         window.addEventListener('message', (event) => {
-          eval(event.data);
+          try {
+            eval(event.data);
+          } catch (error) {
+            const rootElement = document.querySelector('#root');
+            rootElement.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + error + '</div>';
+            console.error(error);
+          }
         }, false)
       </script>
     </body>
@@ -80,6 +93,10 @@ const App = () => {
 
   return (
     <div>
+      <CodeEditor
+        initialValue="const a = 1;"
+        onChange={(value) => setInput(value)}
+      />
       <textarea
         cols={50}
         rows={10}
@@ -89,8 +106,12 @@ const App = () => {
       <div>
         <button onClick={handleClick}>Submit</button>
       </div>
-      <iframe srcDoc={html} sandbox="allow-scripts" ref={iframeRef}></iframe>
-      <pre>{code}</pre>
+      <iframe
+        title="preview"
+        srcDoc={html}
+        sandbox="allow-scripts"
+        ref={iframeRef}
+      ></iframe>
     </div>
   );
 };
