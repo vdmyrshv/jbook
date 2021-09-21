@@ -1,6 +1,6 @@
 import bundle from '../bundler';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import CodeEditor from '../components/CodeEditor';
 import Preview from '../components/Preview';
@@ -8,14 +8,23 @@ import Resizable from './Resizable';
 
 const CodeCell = () => {
   const [input, setInput] = useState('');
+  const [error, setError] = useState('');
   const [code, setCode] = useState('');
 
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = async () => {
-    // code for build file
-    const result = await bundle(input);
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      // code for build file
+      const result = await bundle(input);
 
-    setCode(result);
-  };
+      setCode(result.code);
+      setError(result.error);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [input]);
+
   return (
     <Resizable direction="vertical">
       <div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
@@ -25,7 +34,7 @@ const CodeCell = () => {
             onChange={(value) => setInput(value)}
           />
         </Resizable>
-        <Preview code={code} />
+        <Preview code={code} error={error} />
       </div>
     </Resizable>
   );

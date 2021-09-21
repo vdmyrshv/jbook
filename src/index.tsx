@@ -1,15 +1,17 @@
-import "bulmaswatch/superhero/bulmaswatch.min.css";
+import 'bulmaswatch/superhero/bulmaswatch.min.css';
 
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 
-import CodeCell from "./components/CodeCell";
+import CodeCell from './components/CodeCell';
+import TextEditor from './components/TextEditor';
 
 const App = () => {
   return (
     <div>
-      <CodeCell />
+      {/* <CodeCell /> */}
+      <TextEditor />
     </div>
   );
 };
 
-ReactDOM.render(<App />, document.querySelector("#root"));
+ReactDOM.render(<App />, document.querySelector('#root'));
