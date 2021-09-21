@@ -1,19 +1,14 @@
-import bundle from "../bundler";
+import bundle from '../bundler';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import CodeEditor from "../components/CodeEditor";
-import Preview from "../components/Preview";
+import CodeEditor from '../components/CodeEditor';
+import Preview from '../components/Preview';
+import Resizable from './Resizable';
 
 const CodeCell = () => {
-  const [input, setInput] = useState("");
-  const [code, setCode] = useState("");
-
-  const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = (
-    event
-  ) => {
-    setInput(event.target.value);
-  };
+  const [input, setInput] = useState('');
+  const [code, setCode] = useState('');
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = async () => {
     // code for build file
@@ -22,14 +17,17 @@ const CodeCell = () => {
     setCode(result);
   };
   return (
-    <div>
-      <CodeEditor
-        initialValue="const a = 1;"
-        onChange={(value) => setInput(value)}
-      />
-      <button onClick={handleClick}>Submit</button>
-      <Preview code={code} />
-    </div>
+    <Resizable direction="vertical">
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
+        <Resizable direction="horizontal">
+          <CodeEditor
+            initialValue="const a = 1;"
+            onChange={(value) => setInput(value)}
+          />
+        </Resizable>
+        <Preview code={code} />
+      </div>
+    </Resizable>
   );
 };
 

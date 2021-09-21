@@ -1,4 +1,6 @@
-import { useEffect, useRef } from "react";
+import './preview.css';
+
+import { useEffect, useRef } from 'react';
 
 interface PreviewProps {
   code: string;
@@ -6,7 +8,8 @@ interface PreviewProps {
 
 const html = `
 <html>
-  <headd></head>
+  <headd>
+  </head>
   <body>
     <div id="root"></div>
     <script>
@@ -31,16 +34,18 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
     iframeRef.current.srcdoc = html;
     // instead of updating state for the code string, a postMessage is sent to the iframe to communicate the code
     // instead of using source doc
-    iframeRef.current.contentWindow.postMessage(code, "*");
+    iframeRef.current.contentWindow.postMessage(code, '*');
   }, [code]);
 
   return (
-    <iframe
-      title="preview"
-      srcDoc={html}
-      sandbox="allow-scripts"
-      ref={iframeRef}
-    ></iframe>
+    <div className="wrapper">
+      <iframe
+        title="preview"
+        srcDoc={html}
+        sandbox="allow-scripts"
+        ref={iframeRef}
+      ></iframe>
+    </div>
   );
 };
 
