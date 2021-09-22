@@ -2,7 +2,7 @@ import 'bulmaswatch/superhero/bulmaswatch.min.css';
 
 import ReactDOM from 'react-dom';
 
-import CodeCell from './components/CodeCell';
+import CellList from './components/CellList';
 import TextEditor from './components/TextEditor';
 
 import { Provider } from 'react-redux';
@@ -12,8 +12,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <div>
-        {/* <CodeCell /> */}
-        <TextEditor />
+        <CellList />
       </div>
     </Provider>
   );

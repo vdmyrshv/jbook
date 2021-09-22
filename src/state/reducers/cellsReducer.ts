@@ -27,13 +27,13 @@ const reducer = produce((state: CellsState = initialState, action: Action) => {
     case ActionType.UPDATE_CELL: {
       const { id, content } = action.payload;
       state.data[id].content = content;
-      return;
+      return state;
     }
     case ActionType.DELETE_CELL: {
       delete state.data[action.payload];
       // when creating a NEW array you need to assign it back to state.order or any other state you're working with
       state.order = state.order.filter((id) => id !== action.payload);
-      return;
+      return state;
     }
     case ActionType.MOVE_CELL: {
       const { id, direction } = action.payload;
@@ -50,10 +50,10 @@ const reducer = produce((state: CellsState = initialState, action: Action) => {
       //   state.order[index] = after;
       // }
       const targetIndex = direction === 'up' ? index - 1 : index + 1;
-      if (targetIndex < 0 || targetIndex > state.order.length - 1) return;
+      if (targetIndex < 0 || targetIndex > state.order.length - 1) return state;
       state.order[index] = state.order[targetIndex];
       state.order[targetIndex] = id;
-      return;
+      return state;
     }
     case ActionType.INSERT_CELL_BEFORE: {
       const cell: Cell = {
@@ -70,12 +70,12 @@ const reducer = produce((state: CellsState = initialState, action: Action) => {
 
       if (foundIndex < 0) {
         state.order.push(cell.id);
-        return;
+        return state;
       }
 
       state.order = state.order.splice(foundIndex, 0, cell.id);
 
-      return;
+      return state;
     }
     default:
       return state;

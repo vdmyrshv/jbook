@@ -3,7 +3,6 @@ import { Direction } from '../actions';
 import { CellTypes } from '../cell';
 
 import {
-  Action,
   DeleteCellAction,
   InsertCellBeforeAction,
   MoveCellAction,
